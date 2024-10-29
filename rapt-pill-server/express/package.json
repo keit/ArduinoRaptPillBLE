@@ -1,0 +1,38 @@
+{
+  "name": "rapt-pill-server",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "express": "node src/server.js"
+  },
+  "dependencies": {
+    "@influxdata/influxdb-client": "^1.35.0",
+    "chart.js": "^4.4.4",
+    "chartjs-adapter-date-fns": "^3.0.0",
+    "express": "^4.21.0",
+    "lucide-react": "^0.453.0",
+    "next": "14.2.14",
+    "react": "^18",
+    "react-chartjs-2": "^5.2.0",
+    "react-date-range": "^2.0.1",
+    "react-dom": "^18",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-date-range": "^1.4.9",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.14",
+    "postcss": "^8.4.47",
+    "prettier": "3.3.3",
+    "tailwindcss": "^3.4.13",
+    "typescript": "^5"
+  }
+}

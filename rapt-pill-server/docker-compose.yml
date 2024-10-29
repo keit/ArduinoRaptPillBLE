@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  influxdb:
+    build:
+      context: ./influxdb  # Path to the InfluxDB Dockerfile
+    container_name: influxdb
+    ports:
+      - "8086:8086"  # InfluxDB port
+    volumes:
+      - ./influxdb_data:/var/lib/influxdb2  # Volume for InfluxDB data persistence
+
+  express:
+    build:
+      context: ./express  # Path to the Express.js Dockerfile
+    container_name: express_app
+    ports:
+      - "3000:3000"  # Express.js app port
+    volumes:
+      - ./express:/app  # Bind your local folder for development
+    depends_on:
+      - influxdb  # Ensure that InfluxDB starts before Express
+    env_file:
+      - ./express/.env  # Use the .env file for environment variables
+
+volumes:
+  influxdb_data:  # Define a persistent volume for InfluxDB using a bind mount
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /Users/keitakashima/temp
