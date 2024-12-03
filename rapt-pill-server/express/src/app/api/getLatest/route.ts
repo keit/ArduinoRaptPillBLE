@@ -1,8 +1,11 @@
 import { queryApi } from "../InfluxApi";
 import { InfluxDbData, reduceToData } from "../InfluxDbData";
+import * as fs from "fs";
 
 export async function GET() {
-  const bucket = process.env.INFLUXDB_BUCKET || "your-bucket";
+  const bucket = fs
+    .readFileSync("/run/secrets/influxdb2-admin-bucket", "utf8")
+    .trim();
 
   const fluxQuery = `
     from(bucket: "${bucket}")

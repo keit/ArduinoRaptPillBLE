@@ -1,8 +1,11 @@
 import { queryApi } from "../InfluxApi";
 import { InfluxDbData } from "../InfluxDbData";
+import * as fs from "fs";
 
 export async function GET(req) {
-  const bucket = process.env.INFLUXDB_BUCKET || "your-bucket";
+  const bucket = fs
+    .readFileSync("/run/secrets/influxdb2-admin-bucket", "utf8")
+    .trim();
 
   const { searchParams } = new URL(req.url);
   const start = searchParams.get("start");

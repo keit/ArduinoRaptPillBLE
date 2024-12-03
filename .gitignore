@@ -41,6 +41,12 @@ influxdb_data
 #secure data
 .env
 arduino_secrets.h
+.env.influxdb2-admin-bucket
+.env.influxdb2-admin-orgname
+.env.influxdb2-admin-password
+.env.influxdb2-admin-token
+.env.influxdb2-admin-url
+.env.influxdb2-admin-username
 
 # arduino libraries
 libraries

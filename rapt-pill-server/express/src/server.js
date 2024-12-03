@@ -2,6 +2,7 @@ const express = require("express");
 const next = require("next");
 const { WebSocketServer } = require("ws");
 const { InfluxDB, Point } = require("@influxdata/influxdb-client");
+const fs = require("fs");
 
 const dev = process.env.NODE_ENV !== "production";
 const nextApp = next({ dev });
@@ -11,11 +12,17 @@ const server = express();
 // Middleware to parse JSON body
 server.use(express.json());
 
-// Use environment variables for configuration
+const org = fs
+  .readFileSync("/run/secrets/influxdb2-admin-orgname", "utf8")
+  .trim();
+const bucket = fs
+  .readFileSync("/run/secrets/influxdb2-admin-bucket", "utf8")
+  .trim();
+const token = fs
+  .readFileSync("/run/secrets/influxdb2-admin-token", "utf8")
+  .trim();
+
 const url = process.env.INFLUXDB_URL;
-const token = process.env.INFLUXDB_TOKEN;
-const org = process.env.INFLUXDB_ORG;
-const bucket = process.env.INFLUXDB_BUCKET;
 const expressServerPort = process.env.EXPRESS_SERVER_PORT;
 
 const influxDB = new InfluxDB({ url, token });

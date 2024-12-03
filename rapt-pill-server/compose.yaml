@@ -1,32 +1,69 @@
-version: '3'
-
+# compose.yaml
 services:
-  influxdb:
-    build:
-      context: ./influxdb  # Path to the InfluxDB Dockerfile
-    container_name: influxdb
+  influxdb2:
+    image: influxdb:2
     ports:
-      - "8086:8086"  # InfluxDB port
+      - 8086:8086
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME_FILE: /run/secrets/influxdb2-admin-username
+      DOCKER_INFLUXDB_INIT_PASSWORD_FILE: /run/secrets/influxdb2-admin-password
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN_FILE: /run/secrets/influxdb2-admin-token
+      DOCKER_INFLUXDB_INIT_ORG: /run/secrets/influxdb2-admin-orgname
+      DOCKER_INFLUXDB_INIT_BUCKET: /run/secrets/influxdb2-admin-bucket
+    secrets:
+      - influxdb2-admin-username
+      - influxdb2-admin-password
+      - influxdb2-admin-token
+      - influxdb2-admin-orgname
+      - influxdb2-admin-bucket
+
     volumes:
-      - ./influxdb_data:/var/lib/influxdb2  # Volume for InfluxDB data persistence
+      - type: volume
+        source: influxdb2-data
+        target: /var/lib/influxdb2
+      - type: volume
+        source: influxdb2-config
+        target: /etc/influxdb2
 
   express:
     build:
-      context: ./express  # Path to the Express.js Dockerfile
+      context: ./express # Path to the Express.js Dockerfile
     container_name: express_app
     ports:
-      - "3000:3000"  # Express.js app port
+      - "3000:3000" # Express.js app port
     volumes:
-      - ./express:/app  # Bind your local folder for development
+      - ./express:/app # Bind your local folder for development
     depends_on:
-      - influxdb  # Ensure that InfluxDB starts before Express
-    env_file:
-      - ./express/.env  # Use the .env file for environment variables
+      - influxdb2 # Ensure that InfluxDB starts before Express
+    environment:
+      INFLUXDB_URL: http://influxdb2:8086
+      INFLUXDB_TOKEN: /run/secrets/influxdb2-admin-token
+      INFLUXDB_ORG: /run/secrets/influxdb2-admin-orgname
+      INFLUXDB_BUCKET: /run/secrets/influxdb2-admin-bucket
+      NODE_ENV: dev
+      EXPRESS_SERVER_PORT: 3000
+
+    secrets:
+      - influxdb2-admin-token
+      - influxdb2-admin-orgname
+      - influxdb2-admin-bucket
+
+    # env_file:
+    #   - ./express/.env # Use the .env file for environment variables
+
+secrets:
+  influxdb2-admin-username:
+    file: .env.influxdb2-admin-username
+  influxdb2-admin-password:
+    file: .env.influxdb2-admin-password
+  influxdb2-admin-token:
+    file: .env.influxdb2-admin-token
+  influxdb2-admin-orgname:
+    file: .env.influxdb2-admin-orgname
+  influxdb2-admin-bucket:
+    file: .env.influxdb2-admin-bucket
 
 volumes:
-  influxdb_data:  # Define a persistent volume for InfluxDB using a bind mount
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /Users/keitakashima/temp
+  influxdb2-data:
+  influxdb2-config:
