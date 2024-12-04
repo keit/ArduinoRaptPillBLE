@@ -1,9 +1,3 @@
-# TODO
-
-### [Configure influxdb from compose.yaml](https://docs.influxdata.com/influxdb/v2/install/use-docker-compose/)!!!!
-
-### How to find RAPT_PILL_BLE_MAC_ADDRESS for arduino_secrets.h
-
 # ArduinoRaptPillBLE
 
 ## Overview
@@ -75,30 +69,28 @@ This is not by far a step-by-step instructions.
    - **rapt-pill-ble:** a component which executes on Arduino
    - **rapt-pill-server:** a server which executes on a personal computer
 
-3. **Software Installation: **
+3. **Software Installation:**
 
    - git clone git@github.com:keit/ArduinoRaptPillBLE.git
    - cd ArduinoRaptPillBLE/
    - open rapt-pill-ble.ino with ArduinoIDE
    - Select the correct board(Arduino UNO R4 WiFi) and port in the Arduino IDE (Tools > Board and Tools > Port).
-   - set the sketchbook location to ArduinoRaptPillBLE folder in the Arduino IDE Settings.
+   - Set the sketchbook location to ArduinoRaptPillBLE folder in the Arduino IDE Settings.
    - Install ArduinoJSON(7.2.1), ArduinoBLE(1.3.7), WebSockets(2.6.1) libraries from ArduinoIDE.
-   - Copy arduino_secrets.samp to arduino_secrets.h and populate with appropriate values.
-   - Verify and upload the project to your Arduino.
+   - Copy arduino_secrets.samp to arduino_secrets.h and populate with appropriate values. RAPT_PILL_BLE_MAC_ADDRESS can be found on Diagnostics page of RaptPill Settings on [Rapt Pill Captive Portal](https://docs.rapt.io/equipment/rapt-pill-hydrometer/rapt-pill-captive-portal). You need to calculate the value from the displayed value on the diagnostics page.
 
+     _...the MAC address used for registration can be reliably calculated by taking the RAPT Pill's BLE address and subtracting 2 off the last octet..._
+     [See Rapt Pill API document](https://gitlab.com/rapt.io/public/-/wikis/Pill%20Hydrometer%20Bluetooth%20Transmissions#v2-format)
+
+   - Verify and upload the project to your Arduino.
    - cd ArduinoRaptPillBLE/rapt-pill-server/express
    - npm install
-   - cp .env-samp to .env and populate with appropriate values.(TODO InfluxDB token!)
    - cd ArduinoRaptPillBLE/rapt-pill-server
    - docker compose up --build
 
 ---
 
 ## Future Enhancements
-
-- Add support for cooling systems for more precise temperature control.
-- Integrate with third-party platforms like Home Assistant or RAPT Cloud.
-- Enable advanced analytics and notifications for fermentation progress.
 
 ---
 
