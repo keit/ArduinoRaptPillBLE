@@ -1,3 +1,9 @@
+# TODO
+
+### [Configure influxdb from compose.yaml](https://docs.influxdata.com/influxdb/v2/install/use-docker-compose/)!!!!
+
+### How to find RAPT_PILL_BLE_MAC_ADDRESS for arduino_secrets.h
+
 # ArduinoRaptPillBLE
 
 ## Overview
