@@ -86,6 +86,10 @@ This is not by far a step-by-step instructions.
    - cd ArduinoRaptPillBLE/rapt-pill-server/express
    - npm install
    - cd ArduinoRaptPillBLE/rapt-pill-server
+   - cp .env.influxdb2-_.samp files to .env.influxdb2-_ by executing the following command. Update them if you need but as an initial installation it should work.
+
+     **for file in .env.influxdb2-\*.samp; do cp "$file" "${file%.samp}"; done**
+
    - docker compose up --build
 
 ---
